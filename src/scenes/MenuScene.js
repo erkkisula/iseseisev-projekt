@@ -9,7 +9,7 @@ export class MenuScene extends Phaser.Scene{
     }
     init(data){
         console.log(data);
-        console.log("Ready!");
+        console.log("Menu Ready!");
     }
     create(){
         this.add.image(0,0, "title_bg").setOrigin(0).setDepth(0);
@@ -27,6 +27,9 @@ export class MenuScene extends Phaser.Scene{
         });
         playButton.on("pointerout", ()=>{
             playButton.setTexture("play_button");
+        });
+        playButton.on("pointerdown", ()=>{
+            this.scene.start(CST.SCENES.GAME);
         });
 
         optionsButton.setInteractive();

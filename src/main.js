@@ -2,12 +2,16 @@
 
 import {LoadScene} from "./scenes/LoadScene";
 import {MenuScene} from "./scenes/MenuScene";
+import {GameScene} from "./scenes/GameScene";
 
 let config = {
     width:960,
     height:720,
+    physics: {
+        default: "arcade"
+    },
     scene:[
-        LoadScene, MenuScene
+        LoadScene, MenuScene, GameScene
     ]
 };
 
