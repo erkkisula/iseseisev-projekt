@@ -8,7 +8,11 @@ let config = {
     width:960,
     height:720,
     physics: {
-        default: "arcade"
+        default: "arcade",
+        arcade: {
+            gravity: { y: 0},
+            debug: false
+        }
     },
     scene:[
         LoadScene, MenuScene, GameScene

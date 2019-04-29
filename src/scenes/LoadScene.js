@@ -12,6 +12,7 @@ export class LoadScene extends Phaser.Scene{
     }
 
     preload(){
+        //UI
         this.load.image("title_bg", "./assets/img/game_bg.png");
         this.load.image("options_button", "./assets/img/options_button.png");
         this.load.image("options_buttonh", "./assets/img/options_button_hover.png");
@@ -21,6 +22,8 @@ export class LoadScene extends Phaser.Scene{
         this.load.image("credits_button", "./assets/img/credits_button.png");
         this.load.image("credits_buttonh", "./assets/img/credits_button_hover.png");
 
+        //Enemies and player
+        this.load.image("basic_enemy", "./assets/img/enemy1.png");
         this.load.image("player", "./assets/sprites/player.png");
 
         
