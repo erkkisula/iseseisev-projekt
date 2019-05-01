@@ -8,7 +8,7 @@ export class LoadScene extends Phaser.Scene{
         });
     }
     init(){
-        
+        console.log("Loading...");
     }
 
     preload(){
@@ -23,8 +23,13 @@ export class LoadScene extends Phaser.Scene{
         this.load.image("credits_buttonh", "./assets/img/credits_button_hover.png");
 
         //Enemies and player
-        this.load.image("basic_enemy", "./assets/img/enemy1.png");
+        this.load.image("basic_enemy", "./assets/sprites/enemy1.png");
+        this.load.image("homing_enemy", "./assets/sprites/enemy2.png");
         this.load.image("player", "./assets/sprites/player.png");
+        this.load.image("wave1", "./assets/sprites/wave1.png");
+        this.load.image("wave2", "./assets/sprites/wave2.png");
+        this.load.image("wave3", "./assets/sprites/wave3.png");
+        this.load.image("wave4", "./assets/sprites/wave4.png");
 
         
         let loadingBar = this.add.graphics({
