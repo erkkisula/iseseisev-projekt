@@ -24,7 +24,14 @@ export class LoadScene extends Phaser.Scene{
         this.load.image("logo", "./assets/img/logo.png");
         this.load.image("credits_button", "./assets/img/credits_button.png");
         this.load.image("credits_buttonh", "./assets/img/credits_button_hover.png");
-
+        //Shop
+        this.load.image("shop_button", "./assets/img/shop/shop_button.png");
+        this.load.image("shop_buttonh", "./assets/img/shop/shop_button_hover.png");
+        this.load.image("buy_button", "./assets/img/shop/buy_button.png");
+        this.load.image("buy_buttonh", "./assets/img/shop/buy_button_hover.png");
+        this.load.image("close_button", "./assets/img/shop/X_button.png");
+        this.load.image("close_buttonh", "./assets/img/shop/X_button_hover.png");
+        this.load.image("shop_back", "./assets/img/shop/ShopBack.png");
         //Enemies and player
         this.load.image("basic_enemy", "./assets/sprites/enemy1.png");
         this.load.image("homing_enemy", "./assets/sprites/enemy2.png");

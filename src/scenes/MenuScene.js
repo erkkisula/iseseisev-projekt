@@ -18,7 +18,6 @@ export class MenuScene extends Phaser.Scene{
         //Menu Buttons
         let playButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2, "play_button").setDepth(1);
         let helpButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2 +100, "help_button").setDepth(1);
-        let creditsButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2 +200, "credits_button").setDepth(1);
 
         playButton.setInteractive();
 
@@ -42,15 +41,6 @@ export class MenuScene extends Phaser.Scene{
         });
         helpButton.on("pointerdown", ()=>{
             this.scene.start("help");
-        });
-
-        creditsButton.setInteractive();
-
-        creditsButton.on("pointerover", ()=>{
-            creditsButton.setTexture("credits_buttonh");
-        });
-        creditsButton.on("pointerout", ()=>{
-            creditsButton.setTexture("credits_button");
         });
     }
 }
