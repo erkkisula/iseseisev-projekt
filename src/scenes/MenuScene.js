@@ -17,7 +17,7 @@ export class MenuScene extends Phaser.Scene{
 
         //Menu Buttons
         let playButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2, "play_button").setDepth(1);
-        let optionsButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2 +100, "options_button").setDepth(1);
+        let helpButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2 +100, "help_button").setDepth(1);
         let creditsButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2 +200, "credits_button").setDepth(1);
 
         playButton.setInteractive();
@@ -32,16 +32,16 @@ export class MenuScene extends Phaser.Scene{
             this.scene.start(CST.SCENES.GAME);
         });
 
-        optionsButton.setInteractive();
+        helpButton.setInteractive();
 
-        optionsButton.on("pointerover", ()=>{
-            optionsButton.setTexture("options_buttonh");
+        helpButton.on("pointerover", ()=>{
+            helpButton.setTexture("help_buttonh");
         });
-        optionsButton.on("pointerout", ()=>{
-            optionsButton.setTexture("options_button");
+        helpButton.on("pointerout", ()=>{
+            helpButton.setTexture("help_button");
         });
-        optionsButton.on("pointerdown", ()=>{
-            console.log("DEBUG: click!");
+        helpButton.on("pointerdown", ()=>{
+            this.scene.start("help");
         });
 
         creditsButton.setInteractive();

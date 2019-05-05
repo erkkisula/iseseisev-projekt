@@ -4,6 +4,8 @@ import {LoadScene} from "./scenes/LoadScene";
 import {MenuScene} from "./scenes/MenuScene";
 import {GameScene} from "./scenes/GameScene";
 import {OverScene} from "./scenes/OverScene";
+import {HelpScene} from "./scenes/HelpScene";
+
 
 let config = {
     width:960,
@@ -16,7 +18,7 @@ let config = {
         }
     },
     scene:[
-        LoadScene, MenuScene, GameScene, OverScene
+        LoadScene, MenuScene, GameScene, OverScene, HelpScene
     ]
 };
 

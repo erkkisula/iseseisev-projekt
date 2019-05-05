@@ -10,6 +10,7 @@ export class GameScene extends Phaser.Scene{
         this.gameTimer = 0;
         this.score = 0;
         this.scoreAdd = 0.1;
+        this.playerMaxHealth = 100;
         this.playerHealth = 100;
         this.playerImmune = 0;
         this.immuneTimer = 0;
@@ -18,6 +19,7 @@ export class GameScene extends Phaser.Scene{
         this.lastHoming = 5000;
         this.lastBasic = 500;
         this.lastWave = 400;
+        this.lastRusher = 1000;
     }
 
     init(){
@@ -25,9 +27,15 @@ export class GameScene extends Phaser.Scene{
     }
 
     preload(){
-        let healthbar = this.add.graphics({
+        this.healthBar = this.add.graphics({
             fillStyle: {
-                color: 0xffffff
+                color: 0x40ff00
+            }
+        });
+
+        this.healthBarBack = this.add.graphics({
+            fillStyle: {
+                color: 0xff4000
             }
         });
     }
@@ -40,10 +48,16 @@ export class GameScene extends Phaser.Scene{
         this.basicenemies = this.add.group();
         this.homingenemies = this.add.group();
         this.waveenemies = this.add.group();
+        this.rushers = this.add.group();
         //Collisions
         this.physics.add.collider(this.player, this.basicenemies, this.playerHitBasic, null, this);
         this.physics.add.collider(this.player, this.homingenemies, this.playerHitHoming, null, this);
         this.physics.add.collider(this.player, this.waveenemies, this.playerHitWave, null, this);
+        this.physics.add.collider(this.player, this.rushers, this.playerHitRusher, null, this);
+        //Health
+        this.drawHealthBar();
+        this.healthBarBack.fillRect(800, 20, 150, 40);
+        this.healthBarBack.setDepth(999);
     }
 
     update(){
@@ -54,9 +68,11 @@ export class GameScene extends Phaser.Scene{
         this.lastHoming ++;
         this.gameTimer ++;
         this.lastWave ++;
+        this.lastRusher ++;
         this.spawnBasics();
         this.spawnHoming();
         this.spawnWaves();
+        this.spawnRusher();
         this.playerImmunity();
         this.changeLevel();
         this.increaseScoreAdd();
@@ -65,16 +81,15 @@ export class GameScene extends Phaser.Scene{
                 this.physics.accelerateToObject(this.hEnemy, this.player, 200);
             }
         }
-
-        console.log(this.playerHealth);
         this.gameOver();
     }
 
     playerHitBasic(){
         if(this.playerImmune == 0){
-            this.playerHealth -= 10;
+            this.doDamage(10);
             this.score -= 10;
             this.playerImmune = 1;
+            this.drawHealthBar();
         }else{
             console.log("Player is immune to damage!");
         }
@@ -83,9 +98,10 @@ export class GameScene extends Phaser.Scene{
 
     playerHitHoming(){
         if(this.playerImmune == 0){
-            this.playerHealth -= 20;
+            this.doDamage(20);
             this.score -= 30;
             this.playerImmune = 1;
+            this.drawHealthBar();
         }else{
             console.log("Player is immune to damage!");
         }
@@ -93,9 +109,21 @@ export class GameScene extends Phaser.Scene{
 
     playerHitWave(){
         if(this.playerImmune == 0){
-            this.playerHealth -= 30;
+            this.doDamage(30);
             this.score -= 50;
             this.playerImmune = 1;
+            this.drawHealthBar();
+        }else{
+            console.log("Player is immune to damage!");
+        }
+    }
+
+    playerHitRusher(){
+        if(this.playerImmune == 0){
+            this.doDamage(50);
+            this.score -= 50;
+            this.playerImmune = 1;
+            this.drawHealthBar();
         }else{
             console.log("Player is immune to damage!");
         }
@@ -132,15 +160,12 @@ export class GameScene extends Phaser.Scene{
     }
 
     spawnWaves(){
-        if(this.level > 2 && this.level < 10 && this.lastWave > 450){
+        if(this.level > 2 && this.level < 8 && this.lastWave > 450){
             let temp = Phaser.Math.Between(1,4);
             if(temp == 1){
                 let placeX = 20;
                 for(let i = 0; i < 8; i++){
-                    this.wave1 = this.add.existing(new WaveEnemy(this, placeX, 800, 'wave1').setDepth(1).setImmovable(true));
-                    this.physics.add.existing(this.wave1);
-                    this.wave1.setVelocityY(-400);
-                    this.waveenemies.add(this.wave1);
+                    this.addWaveEnemyX(placeX, 800, 'wave1', -400);
                     placeX += 50;
                 }
                 console.log("Wave Spawning! TYPE: A1");
@@ -150,10 +175,7 @@ export class GameScene extends Phaser.Scene{
             if(temp == 2){
                 let placeX = 940;
                 for(let i = 0; i < 8; i++){
-                    this.wave1 = this.add.existing(new WaveEnemy(this, placeX, -100, 'wave3').setDepth(1).setImmovable(true));
-                    this.physics.add.existing(this.wave1);
-                    this.wave1.setVelocityY(400);
-                    this.waveenemies.add(this.wave1);
+                    this.addWaveEnemyX(placeX, -100, 'wave3', 400);
                     placeX -= 50;
                 }
                 console.log("Wave Spawning! TYPE: A2");
@@ -163,10 +185,7 @@ export class GameScene extends Phaser.Scene{
             if(temp == 3){
                 let placeY = 20;
                 for(let i = 0; i < 8; i++){
-                    this.wave1 = this.add.existing(new WaveEnemy(this, -100, placeY, 'wave2').setDepth(1).setImmovable(true));
-                    this.physics.add.existing(this.wave1);
-                    this.wave1.setVelocityX(400);
-                    this.waveenemies.add(this.wave1);
+                    this.addWaveEnemyY(-100, placeY, 'wave2', 400);
                     placeY += 50;
                 }
                 console.log("Wave Spawning! TYPE: A3");
@@ -175,16 +194,134 @@ export class GameScene extends Phaser.Scene{
             if(temp == 4){
                 let placeY = 700;
                 for(let i = 0; i < 8; i++){
-                    this.wave1 = this.add.existing(new WaveEnemy(this, 1060, placeY, 'wave4').setDepth(1).setImmovable(true));
-                    this.physics.add.existing(this.wave1);
-                    this.wave1.setVelocityX(-400);
-                    this.waveenemies.add(this.wave1);
+                    this.addWaveEnemyY(1060, placeY, 'wave4', -400);
                     placeY -= 50;
                 }
                 console.log("Wave Spawning! TYPE: A4");
                 this.lastWave = 0;
             }
         }
+
+        if(this.level > 7 && this.lastWave > 450){
+            let temp = Phaser.Math.Between(1,5);
+            //let temp = 5;
+            if(temp == 1){
+                let placeX = 20;
+                for(let i = 0; i < 4; i++){
+                    this.addWaveEnemyX(placeX, 800, 'wave1', -450);
+                    placeX += 50;
+                }
+                placeX = 350;
+                for(let i = 0; i < 13; i++){
+                    this.addWaveEnemyX(placeX, 800, 'wave1', -450);
+                    placeX += 50;
+                }
+                console.log("Wave Spawning! TYPE: B1");
+                this.lastWave = 0;
+            }
+
+            if (temp == 2) {
+                let placeX = 20;
+                for (let i = 0; i < 8; i++) {
+                    this.addWaveEnemyX(placeX, -100, 'wave3', 450);
+                    placeX += 50;
+                }
+                placeX = 550;
+                for (let i = 0; i < 9; i++) {
+                    this.addWaveEnemyX(placeX, -100, 'wave3', 450);
+                    placeX += 50;
+                }
+                console.log("Wave Spawning! TYPE: B2");
+                this.lastWave = 0;
+
+            }
+
+            if(temp == 3){
+                let placeY = 20;
+                let placeX = 20;
+                for(let i = 0; i < 8; i++){
+                    this.addWaveEnemyX(placeX, 800, 'wave1', -400);
+                    placeX += 50;
+                }
+                for(let i = 0; i < 8; i++){
+                    this.addWaveEnemyY(1060, placeY, 'wave4', -580);
+                    placeY += 50;
+                }
+                console.log("Wave Spawning! TYPE: B3");
+                this.lastWave = 0;
+            }
+
+            if(temp == 4){
+                let placeY = 20;
+                for(let i = 0; i < 6; i++){
+                    this.addWaveEnemyY(-100, placeY, 'wave2', 400);
+                    placeY += 50;
+                }
+                placeY = 700;
+                for(let i = 0; i < 6; i++){
+                    this.addWaveEnemyY(1060, placeY, 'wave4', -400);
+                    placeY -= 50;
+                }
+                console.log("Wave Spawning! TYPE: B4");
+                this.lastWave = 0;
+            }
+
+            if(temp == 5){
+                let placeX = 20;
+                for(let i = 0; i < 6; i++){
+                    this.addWaveEnemyX(placeX, 800, 'wave1', -450);
+                    placeX += 50;
+                }
+                placeX = 450;
+                for(let i = 0; i < 10; i++){
+                    this.addWaveEnemyX(placeX, 800, 'wave1', -450);
+                    placeX += 50;
+                }
+                let placeY = 20;
+                for(let i = 0; i < 6; i++){
+                    this.addWaveEnemyY(-100, placeY, 'wave2', 400);
+                    placeY += 50;
+                }
+                placeY = 700;
+                for(let i = 0; i < 6; i++){
+                    this.addWaveEnemyY(1060, placeY, 'wave4', -400);
+                    placeY -= 50;
+                }
+                console.log("Wave Spawning! TYPE: B5");
+                this.lastWave = 0;
+            }
+        }
+    }
+
+    spawnRusher(){
+        if(this.level > 9){
+            if(this.lastRusher > 500){
+                //let temp = Phaser.Math.Between(1,2);
+                let temp = 1;
+                if(temp == 1){
+                    this.rusher = this.add.existing(new Rusher(this, -100, Phaser.Math.Between(20, 700), 'rusher'));
+                    this.physics.add.existing(this.rusher);
+                    this.rushers.add(this.rusher);
+                    this.physics.accelerateToObject(this.rusher, this.player, 700);
+                    this.lastRusher = 0;
+                    console.log("RUSHER INCOMING");
+                }
+            }
+        }
+    }
+
+    addWaveEnemyX(x, y, texture, vVal){
+        this.wave1 = this.add.existing(new WaveEnemy(this, x, y, texture).setDepth(1).setImmovable(true));
+        this.physics.add.existing(this.wave1);
+        this.wave1.setVelocityY(vVal);
+        this.waveenemies.add(this.wave1);
+    }
+
+    addWaveEnemyY(x, y, texture, vVal){
+        this.wave1 = this.add.existing(new WaveEnemy(this, x, y, texture).setDepth(1).setImmovable(true));
+        this.physics.add.existing(this.wave1);
+        this.wave1.setVelocityX(vVal);
+        this.waveenemies.add(this.wave1);
     }
 
     changeLevel(){
@@ -209,6 +346,24 @@ export class GameScene extends Phaser.Scene{
                 console.log("DEBUG: scoreAdd increase!");
             }
         }
+    }
+
+    doDamage(dmg){
+        if(this.playerHealth >= dmg){
+            this.playerHealth -= dmg;
+        }else{
+            this.playerHealth = 0;
+        }
+    }
+
+    drawHealthBar(){
+        let x = 0;
+        let temp = 0;
+        temp = (this.playerHealth / this.playerMaxHealth);
+        x = 150 * temp;
+        this.healthBar.clear();
+        this.healthBar.fillRect(800, 20, x, 40);
+        this.healthBar.setDepth(1000);
     }
 }
 
@@ -335,6 +490,34 @@ class WaveEnemy extends Phaser.Physics.Arcade.Sprite{
 
     checkAlive(){
         if(this.timeAlive > 200){
+            this.destroy();
+        }
+    }
+}
+
+class Rusher extends Phaser.Physics.Arcade.Sprite{
+    constructor (scene, x, y, texture){
+        super(scene, x, y);
+        this.setTexture(texture);
+        this.setPosition(x, y);
+        this.timeAlive = 0;
+
+        scene.physics.world.enableBody(this, 0);
+    }
+
+    create(){
+
+    }
+
+    preUpdate(time, delta){
+        super.preUpdate(time, delta);
+
+        this.timeAlive++;
+        this.checkAlive();
+    }
+
+    checkAlive(){
+        if(this.timeAlive > 150){
             this.destroy();
         }
     }

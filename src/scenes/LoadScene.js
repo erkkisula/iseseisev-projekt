@@ -14,8 +14,11 @@ export class LoadScene extends Phaser.Scene{
     preload(){
         //UI
         this.load.image("title_bg", "./assets/img/game_bg.png");
-        this.load.image("options_button", "./assets/img/options_button.png");
-        this.load.image("options_buttonh", "./assets/img/options_button_hover.png");
+        this.load.image("help1", "./assets/img/help1.png");
+        this.load.image("help_button", "./assets/img/help_button.png");
+        this.load.image("help_buttonh", "./assets/img/help_button_hover.png");
+        this.load.image("back_button", "./assets/img/back_button.png");
+        this.load.image("back_buttonh", "./assets/img/back_button_hover.png");
         this.load.image("play_button", "./assets/img/play_button.png");
         this.load.image("play_buttonh", "./assets/img/play_button_hover.png");
         this.load.image("logo", "./assets/img/logo.png");
@@ -30,7 +33,7 @@ export class LoadScene extends Phaser.Scene{
         this.load.image("wave2", "./assets/sprites/wave2.png");
         this.load.image("wave3", "./assets/sprites/wave3.png");
         this.load.image("wave4", "./assets/sprites/wave4.png");
-
+        this.load.image("rusher", "./assets/sprites/instagib.png");
         
         let loadingBar = this.add.graphics({
             fillStyle: {
