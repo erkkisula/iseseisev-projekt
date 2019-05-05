@@ -7,19 +7,6 @@ export class GameScene extends Phaser.Scene{
             key: CST.SCENES.GAME
         });
 
-        this.gameTimer = 0;
-        this.score = 0;
-        this.scoreAdd = 0.1;
-        this.playerMaxHealth = 100;
-        this.playerHealth = 100;
-        this.playerImmune = 0;
-        this.immuneTimer = 0;
-        this.level = 1;
-        
-        this.lastHoming = 5000;
-        this.lastBasic = 500;
-        this.lastWave = 400;
-        this.lastRusher = 1000;
     }
 
     init(){
@@ -41,6 +28,20 @@ export class GameScene extends Phaser.Scene{
     }
 
     create(){
+        this.gameTimer = 0;
+        this.score = 0;
+        this.scoreAdd = 0.1;
+        this.playerMaxHealth = 100;
+        this.playerHealth = 100;
+        this.playerImmune = 0;
+        this.immuneTimer = 0;
+        this.level = 1;
+        
+        this.lastHoming = 5000;
+        this.lastBasic = 500;
+        this.lastWave = 400;
+        this.lastRusher = 1000;
+
         this.info = this.add.text(10,10, "Score: " + this.score, { font: '48px Arial', fill: '#000000' }).setDepth(2);
         this.player = this.add.existing(new Player(this, 600, 300)).setDepth(1).setImmovable(true);
         this.add.image(0,0, "title_bg").setOrigin(0).setDepth(0);    
@@ -333,9 +334,25 @@ export class GameScene extends Phaser.Scene{
 
     gameOver(){
         if(this.playerHealth <= 0){
+            this.finalscore = this.score;
+            this.finallevel = this.level;
+            
+            this.gameTimer = 0;
+            this.score = 0;
+            this.scoreAdd = 0.1;
+            this.playerMaxHealth = 100;
+            this.playerHealth = 100;
+            this.playerImmune = 0;
+            this.immuneTimer = 0;
+            this.level = 1;
+            
+            this.lastHoming = 5000;
+            this.lastBasic = 500;
+            this.lastWave = 400;
+            this.lastRusher = 1000;
+
             console.log("GAME OVER!");
-            this.scene.start("gameover", { score: this.score, level: this.level});
-            //this.scene.start("wtf");
+            this.scene.start("gameover", { score: this.finalscore, level: this.finallevel});
         }
     }
 
