@@ -90,6 +90,7 @@ export class GameScene extends Phaser.Scene{
         //punktid
         this.score += this.scoreAdd;
         this.info.setText('Score: ' + Math.round(this.score));
+        this.coininfo.setText('Coins: ' + Math.round(this.coins));
         this.lastBasic ++;
         this.lastHoming ++;
         this.gameTimer ++;
@@ -365,17 +366,26 @@ export class GameScene extends Phaser.Scene{
             
             this.gameTimer = 0;
             this.score = 0;
+            this.coins = 1000;
             this.scoreAdd = 0.1;
             this.playerMaxHealth = 100;
             this.playerHealth = 100;
             this.playerImmune = 0;
             this.immuneTimer = 0;
             this.level = 1;
+            this.regen = 0;
+            this.regenAmount = 0;
+            this.regenLevel = 0;
+            this.regenCost = 50;
+            this.maxHpCost = 50;
+            this.speedCost = 25;
+            this.fillCost = 40;
             
             this.lastHoming = 5000;
             this.lastBasic = 500;
             this.lastWave = 400;
             this.lastRusher = 1000;
+            this.lastRegen = 0;
 
             console.log("GAME OVER!");
             this.scene.start("gameover", { score: this.finalscore, level: this.finallevel});
@@ -670,8 +680,8 @@ export class ShopScene extends Phaser.Scene{
                 gameplay.player.increaseSpeed(50);
                 gameplay.coins -= gameplay.speedCost;
                 gameplay.coininfo.setText("Coins: " + gameplay.coins);
-                gameplay.regenCost += 50;
-                this.speedCost.setText("Cost: " + gameplay.regenCost +" coins");
+                gameplay.speedCost += 50;
+                this.speedCost.setText("Cost: " + gameplay.speedCost +" coins");
             }else if(gameplay.coins < gameplay.speedCost){
                 this.notice.setText("Not enough coins!");
             }
