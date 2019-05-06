@@ -31,7 +31,7 @@ export class GameScene extends Phaser.Scene{
         //Game stats
         this.gameTimer = 0;
         this.score = 0;
-        this.coins = 1000;
+        this.coins = 0;
         this.scoreAdd = 0.1;
         this.playerMaxHealth = 100;
         this.playerHealth = 100;
@@ -44,13 +44,14 @@ export class GameScene extends Phaser.Scene{
         this.regenCost = 50;
         this.maxHpCost = 50;
         this.speedCost = 25;
-        this.fillCost = 40;
+        this.fillCost = 0;
         
         this.lastHoming = 5000;
         this.lastBasic = 500;
         this.lastWave = 400;
         this.lastRusher = 1000;
         this.lastRegen = 0;
+        this.lastCoin = 0;
 
         this.info = this.add.text(10,10, "Score: " + this.score, { font: '48px Arial', fill: '#000000' }).setDepth(1000);
         this.coininfo = this.add.text(10,60, "Coins: " + this.coins, { font: '48px Arial', fill: '#000000' }).setDepth(1000);
@@ -96,6 +97,7 @@ export class GameScene extends Phaser.Scene{
         this.gameTimer ++;
         this.lastWave ++;
         this.lastRusher ++;
+        this.lastCoin ++;
         this.spawnBasics();
         this.spawnHoming();
         this.spawnWaves();
@@ -104,6 +106,7 @@ export class GameScene extends Phaser.Scene{
         this.changeLevel();
         this.increaseScoreAdd();
         this.healthRegen();
+        this.coinGenerator();
         if(this.hEnemy != undefined){
             if(this.hEnemy.active === true){
                 this.physics.accelerateToObject(this.hEnemy, this.player, 200);
@@ -118,6 +121,7 @@ export class GameScene extends Phaser.Scene{
             this.score -= 10;
             this.playerImmune = 1;
             this.drawHealthBar();
+            this.calculateFillCost();
         }else{
             console.log("Player is immune to damage!");
         }
@@ -130,6 +134,7 @@ export class GameScene extends Phaser.Scene{
             this.score -= 30;
             this.playerImmune = 1;
             this.drawHealthBar();
+            this.calculateFillCost();
         }else{
             console.log("Player is immune to damage!");
         }
@@ -141,6 +146,7 @@ export class GameScene extends Phaser.Scene{
             this.score -= 50;
             this.playerImmune = 1;
             this.drawHealthBar();
+            this.calculateFillCost();
         }else{
             console.log("Player is immune to damage!");
         }
@@ -152,6 +158,7 @@ export class GameScene extends Phaser.Scene{
             this.score -= 50;
             this.playerImmune = 1;
             this.drawHealthBar();
+            this.calculateFillCost();
         }else{
             console.log("Player is immune to damage!");
         }
@@ -330,7 +337,7 @@ export class GameScene extends Phaser.Scene{
                     this.rusher = this.add.existing(new Rusher(this, -100, Phaser.Math.Between(20, 700), 'rusher').setDepth(2));
                     this.physics.add.existing(this.rusher);
                     this.rushers.add(this.rusher);
-                    this.physics.accelerateToObject(this.rusher, this.player, 700);
+                    this.physics.accelerateToObject(this.rusher, this.player, 1300);
                     this.lastRusher = 0;
                     console.log("RUSHER INCOMING");
                 }
@@ -366,7 +373,7 @@ export class GameScene extends Phaser.Scene{
             
             this.gameTimer = 0;
             this.score = 0;
-            this.coins = 1000;
+            this.coins = 0;
             this.scoreAdd = 0.1;
             this.playerMaxHealth = 100;
             this.playerHealth = 100;
@@ -379,13 +386,14 @@ export class GameScene extends Phaser.Scene{
             this.regenCost = 50;
             this.maxHpCost = 50;
             this.speedCost = 25;
-            this.fillCost = 40;
+            this.fillCost = 20;
             
             this.lastHoming = 5000;
             this.lastBasic = 500;
             this.lastWave = 400;
             this.lastRusher = 1000;
             this.lastRegen = 0;
+            this.lastCoin = 0;
 
             console.log("GAME OVER!");
             this.scene.start("gameover", { score: this.finalscore, level: this.finallevel});
@@ -427,9 +435,27 @@ export class GameScene extends Phaser.Scene{
             }
             this.lastRegen = 0;
             this.drawHealthBar();
+            this.calculateFillCost();
         }else{
             this.lastRegen++;
         }
+    }
+
+    coinGenerator(){
+        if(this.lastCoin > 99 && this.gameTimer < 2000){
+            this.coins++;
+            this.lastCoin = 0;
+        }else if(this.lastCoin > 69 && this.gameTimer >= 2000 && this.gameTimer < 4000){
+            this.coins++;
+            this.lastCoin = 0;
+        }else if(this.lastCoin > 49 && this.gameTimer >3999){
+            this.coins++;
+            this.lastCoin = 0;
+        }
+    }
+
+    calculateFillCost(){
+        this.fillCost = (this.playerMaxHealth - this.playerHealth) / 2;
     }
 }
 
@@ -697,11 +723,11 @@ export class ShopScene extends Phaser.Scene{
         });
         this.healthButton.on("pointerdown", ()=>{
             if(gameplay.coins >= gameplay.fillCost){
+                gameplay.coins -= gameplay.fillCost;
                 gameplay.playerHealth = gameplay.playerMaxHealth;
                 gameplay.drawHealthBar();
-                gameplay.coins -= gameplay.fillCost;
+                gameplay.calculateFillCost();
                 gameplay.coininfo.setText("Coins: " + gameplay.coins);
-                gameplay.fillCost += 20;
                 this.healthCost.setText("Cost: " + gameplay.fillCost +" coins");
             }else if(gameplay.coins < gameplay.fillCost){
                 this.notice.setText("Not enough coins!");
