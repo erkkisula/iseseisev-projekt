@@ -15,6 +15,11 @@ export class LoadScene extends Phaser.Scene{
         //UI
         this.load.image("title_bg", "./assets/img/game_bg.png");
         this.load.image("help1", "./assets/img/help1.png");
+        this.load.image("help2", "./assets/img/help2.png");
+        this.load.image("pageone", "./assets/img/pageone.png");
+        this.load.image("pagetwo", "./assets/img/pagetwo.png");
+        this.load.image("pageoneh", "./assets/img/pageone_hover.png");
+        this.load.image("pagetwoh", "./assets/img/pagetwo_hover.png");
         this.load.image("help_button", "./assets/img/help_button.png");
         this.load.image("help_buttonh", "./assets/img/help_button_hover.png");
         this.load.image("back_button", "./assets/img/back_button.png");

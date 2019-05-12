@@ -16,6 +16,8 @@ export class HelpScene extends Phaser.Scene{
 
         //buttons
         let backButton = this.add.image(10, 620, "back_button").setOrigin(0).setDepth(1);
+        let pageoneButton = this.add.image(840, 20, "pageone").setOrigin(0).setDepth(1);
+        let pagetwoButton = this.add.image(880, 20, "pagetwo").setOrigin(0).setDepth(1);
 
         backButton.setInteractive();
 
@@ -29,5 +31,28 @@ export class HelpScene extends Phaser.Scene{
             this.scene.start(CST.SCENES.MENU);
         });
 
+        pageoneButton.setInteractive();
+
+        pageoneButton.on("pointerover", ()=>{
+            pageoneButton.setTexture("pageoneh");
+        });
+        pageoneButton.on("pointerout", ()=>{
+            pageoneButton.setTexture("pageone");
+        });
+        pageoneButton.on("pointerdown", ()=>{
+            help.setTexture("help1");
+        }); 
+        
+        pagetwoButton.setInteractive();
+
+        pagetwoButton.on("pointerover", ()=>{
+            pagetwoButton.setTexture("pagetwoh");
+        });
+        pagetwoButton.on("pointerout", ()=>{
+            pagetwoButton.setTexture("pagetwo");
+        });
+        pagetwoButton.on("pointerdown", ()=>{
+            help.setTexture("help2");
+        });    
     }
 }
