@@ -53,8 +53,8 @@ export class GameScene extends Phaser.Scene{
         this.lastRegen = 0;
         this.lastCoin = 0;
 
-        this.info = this.add.text(10,10, "Score: " + this.score, { font: '48px Arial', fill: '#000000' }).setDepth(1000);
-        this.coininfo = this.add.text(10,60, "Coins: " + this.coins, { font: '48px Arial', fill: '#000000' }).setDepth(1000);
+        this.info = this.add.text(10,10, "Score: " + this.score, { font: '48px Roboto', fill: '#000000' }).setDepth(1000);
+        this.coininfo = this.add.text(10,60, "Coins: " + this.coins, { font: '48px Roboto', fill: '#000000' }).setDepth(1000);
         this.player = this.add.existing(new Player(this, 600, 300, this.playerSpeedVal)).setDepth(2).setImmovable(true);
         this.add.image(0,0, "title_bg").setOrigin(0).setDepth(1);    
         //Groups
@@ -180,11 +180,20 @@ export class GameScene extends Phaser.Scene{
     }
 
     spawnBasics(){
-        if(this.lastBasic > Phaser.Math.Between(150,300)){
-            this.bEnemy = this.add.existing(new BasicEnemy(this, Phaser.Math.Between(50, 900), Phaser.Math.Between(50, 680)).setDepth(2));
-            this.physics.add.existing(this.bEnemy);
-            this.basicenemies.add(this.bEnemy);
-            this.lastBasic = 0;
+        if(this.level < 11){
+            if(this.lastBasic > Phaser.Math.Between(150,300)){
+                this.bEnemy = this.add.existing(new BasicEnemy(this, Phaser.Math.Between(50, 900), Phaser.Math.Between(50, 680)).setDepth(2));
+                this.physics.add.existing(this.bEnemy);
+                this.basicenemies.add(this.bEnemy);
+                this.lastBasic = 0;
+            }
+        }else if(this.level > 10){
+            if(this.lastBasic > Phaser.Math.Between(125,225)){
+                this.bEnemy = this.add.existing(new BasicEnemy(this, Phaser.Math.Between(50, 900), Phaser.Math.Between(50, 680)).setDepth(2));
+                this.physics.add.existing(this.bEnemy);
+                this.basicenemies.add(this.bEnemy);
+                this.lastBasic = 0;
+            }
         }
     }
 
@@ -330,12 +339,34 @@ export class GameScene extends Phaser.Scene{
     }
 
     spawnRusher(){
-        if(this.level > 9){
+        if(this.level > 9 && this.level < 14){
             if(this.lastRusher > 500){
-                //let temp = Phaser.Math.Between(1,2);
-                let temp = 1;
+                let temp = Phaser.Math.Between(1,2);
                 if(temp == 1){
                     this.rusher = this.add.existing(new Rusher(this, -100, Phaser.Math.Between(20, 700), 'rusher').setDepth(2));
+                    this.physics.add.existing(this.rusher);
+                    this.rushers.add(this.rusher);
+                    this.physics.accelerateToObject(this.rusher, this.player, 1300);
+                    this.lastRusher = 0;
+                }else{
+                    this.rusher = this.add.existing(new Rusher(this, 1060, Phaser.Math.Between(20, 700), 'rusher').setDepth(2));
+                    this.physics.add.existing(this.rusher);
+                    this.rushers.add(this.rusher);
+                    this.physics.accelerateToObject(this.rusher, this.player, 1300);
+                    this.lastRusher = 0;
+                }
+            }
+        }else if(this.level > 13){
+            if(this.lastRusher > 200){
+                let temp = Phaser.Math.Between(1,2);
+                if(temp == 1){
+                    this.rusher = this.add.existing(new Rusher(this, -100, Phaser.Math.Between(20, 700), 'rusher').setDepth(2));
+                    this.physics.add.existing(this.rusher);
+                    this.rushers.add(this.rusher);
+                    this.physics.accelerateToObject(this.rusher, this.player, 1300);
+                    this.lastRusher = 0;
+                }else{
+                    this.rusher = this.add.existing(new Rusher(this, 1060, Phaser.Math.Between(20, 700), 'rusher').setDepth(2));
                     this.physics.add.existing(this.rusher);
                     this.rushers.add(this.rusher);
                     this.physics.accelerateToObject(this.rusher, this.player, 1300);
@@ -750,9 +781,11 @@ export class ShopScene extends Phaser.Scene{
             if(gameplay.coins >= gameplay.maxHpCost){
                 gameplay.playerMaxHealth += 25;
                 gameplay.drawHealthBar();
+                gameplay.calculateFillCost();
                 gameplay.coins -= gameplay.maxHpCost;
                 gameplay.coininfo.setText("Coins: " + gameplay.coins);
                 gameplay.maxHpCost += 10;
+                this.healthCost.setText("Cost: " + gameplay.fillCost +" coins");
                 this.maxHealthCost.setText("Cost: " + gameplay.maxHpCost +" coins");
             }else if(gameplay.coins < gameplay.maxHpCost){
                 this.notice.setText("Not enough coins!");

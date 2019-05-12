@@ -21,3 +21,13 @@ Mängu kood - Erkki
 Graafika - Erkki
 
 Library - https://phaser.io/
+
+Mäng - http://greeny.cs.tlu.ee/~erkksul/eesrakendustearendus/Kodutööd/iseseisev-projekt/
+
+## Pildid mängust
+
+![image](https://i.imgur.com/Gqhm6aQ.png)
+
+![image](https://i.imgur.com/QG7MCxG.png)
+
+![image](https://i.imgur.com/2BS34Hv.png)
