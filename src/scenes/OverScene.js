@@ -13,11 +13,24 @@ export class OverScene extends Phaser.Scene{
         console.log('init', data);
         this.finalScore = data.score;
         this.finalLevel = data.level;
+        this.hiscore = 0;
+        if (localStorage.getItem("hiscore") === null) {
+            localStorage.setItem("hiscore", this.finalScore);
+            this.hiscore = localStorage.getItem("hiscore");
+        }else{
+            if(this.finalScore > localStorage.getItem("hiscore")){
+                localStorage.setItem("hiscore", this.finalScore);
+                this.hiscore = localStorage.getItem("hiscore");
+            }else{
+                this.hiscore = localStorage.getItem("hiscore");
+            }
+        }
     }
 
     create(){
 
-        this.add.image(0,0, "title_bg").setOrigin(0).setDepth(0);    
+        this.add.image(0,0, "title_bg").setOrigin(0).setDepth(0);
+        this.add.text(this.game.renderer.width / 2, 150, "Hiscore: " + Math.round(this.hiscore), { font: '48px Arial', fill: '#000000' }).setDepth(2).setOrigin(0.5);
         this.add.text(this.game.renderer.width / 2,210, "Your score: " + Math.round(this.finalScore), { font: '48px Arial', fill: '#000000' }).setDepth(2).setOrigin(0.5);
         this.add.text(this.game.renderer.width / 2,270, "Level reached: " + this.finalLevel, { font: '48px Arial', fill: '#000000' }).setDepth(2).setOrigin(0.5);
 

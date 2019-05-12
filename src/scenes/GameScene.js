@@ -41,8 +41,8 @@ export class GameScene extends Phaser.Scene{
         this.regen = 0;
         this.regenAmount = 0;
         this.regenLevel = 0;
-        this.regenCost = 50;
-        this.maxHpCost = 50;
+        this.regenCost = 40;
+        this.maxHpCost = 30;
         this.speedCost = 25;
         this.fillCost = 0;
         
@@ -109,7 +109,11 @@ export class GameScene extends Phaser.Scene{
         this.coinGenerator();
         if(this.hEnemy != undefined){
             if(this.hEnemy.active === true){
-                this.physics.accelerateToObject(this.hEnemy, this.player, 200);
+                if(this.level > 7){
+                    this.physics.accelerateToObject(this.hEnemy, this.player, 300);
+                }else{
+                    this.physics.accelerateToObject(this.hEnemy, this.player, 500);
+                }
             }
         }
         this.gameOver();
@@ -185,7 +189,13 @@ export class GameScene extends Phaser.Scene{
     }
 
     spawnHoming(){
-        if(this.level >= 2 && this.lastHoming >  Phaser.Math.Between(500, 800)){
+        if(this.level >= 2 && this.level < 7 && this.lastHoming >  Phaser.Math.Between(700, 800)){
+            this.hEnemy = this.add.existing(new HomingEnemy(this, Phaser.Math.Between(50, 900),  Phaser.Math.Between(50, 680)).setDepth(2));
+            this.physics.add.existing(this.hEnemy);
+            this.homingenemies.add(this.hEnemy);
+            this.physics.accelerateToObject(this.hEnemy, this.player);
+            this.lastHoming = 0;
+        }else if(this.level > 6 && this.lastHoming >  Phaser.Math.Between(300, 400)){
             this.hEnemy = this.add.existing(new HomingEnemy(this, Phaser.Math.Between(50, 900),  Phaser.Math.Between(50, 680)).setDepth(2));
             this.physics.add.existing(this.hEnemy);
             this.homingenemies.add(this.hEnemy);
@@ -455,7 +465,7 @@ export class GameScene extends Phaser.Scene{
     }
 
     calculateFillCost(){
-        this.fillCost = (this.playerMaxHealth - this.playerHealth) / 2;
+        this.fillCost = (this.playerMaxHealth - this.playerHealth) / 5;
     }
 }
 
@@ -471,6 +481,11 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.body.collideWorldBounds = true;
         this.keys = this.scene.input.keyboard.createCursorKeys();
         this.speed = 300;
+
+        this.moveleft = false;
+        this.moveright = false;
+        this.moveup = false;
+        this.movedown = false;
     }
 
     create(){
@@ -483,21 +498,21 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         //Player movement
         if(this.keys.right.isDown){
             this.setVelocityX(this.speed);
-        }else if(this.keys.right.isUp && this.keys.left.isUp){
-            this.setVelocityX(0);
-        } 
-        //ainult üks on vaja olla up     
+        }
         if(this.keys.left.isDown){
             this.setVelocityX(-this.speed);
         }
-
+        if(this.keys.right.isUp && this.keys.left.isUp){
+            this.setVelocityX(0);
+        } 
         if(this.keys.up.isDown){
             this.setVelocityY(-this.speed);
-        }else if(this.keys.up.isUp && this.keys.down.isUp){
-            this.setVelocityY(0);
         }
         if(this.keys.down.isDown){
             this.setVelocityY(this.speed);
+        }
+        if(this.keys.up.isUp && this.keys.down.isUp){
+            this.setVelocityY(0);
         }
     }
 
@@ -546,7 +561,7 @@ class HomingEnemy extends Phaser.Physics.Arcade.Sprite{
 
         scene.physics.world.enableBody(this, 0);
         this.body.collideWorldBounds = true;
-        //this.setMaxVelocity(500, 500);
+        this.setMaxVelocity(400, 400);
         this.setBounce(1,1);
     }
 
@@ -683,7 +698,7 @@ export class ShopScene extends Phaser.Scene{
                     gameplay.regenLevel++;
                     gameplay.coins -= gameplay.regenCost;
                     gameplay.coininfo.setText("Coins: " + gameplay.coins);
-                    gameplay.regenCost += 70;
+                    gameplay.regenCost += 10;
                     this.regenCost.setText("Cost: " + gameplay.regenCost +" coins");
                 }else if(gameplay.coins < gameplay.regenCost){
                     this.notice.setText("Not enough coins!");
@@ -706,7 +721,7 @@ export class ShopScene extends Phaser.Scene{
                 gameplay.player.increaseSpeed(50);
                 gameplay.coins -= gameplay.speedCost;
                 gameplay.coininfo.setText("Coins: " + gameplay.coins);
-                gameplay.speedCost += 50;
+                gameplay.speedCost += 10;
                 this.speedCost.setText("Cost: " + gameplay.speedCost +" coins");
             }else if(gameplay.coins < gameplay.speedCost){
                 this.notice.setText("Not enough coins!");
@@ -748,7 +763,7 @@ export class ShopScene extends Phaser.Scene{
                 gameplay.drawHealthBar();
                 gameplay.coins -= gameplay.maxHpCost;
                 gameplay.coininfo.setText("Coins: " + gameplay.coins);
-                gameplay.maxHpCost += 75;
+                gameplay.maxHpCost += 10;
                 this.maxHealthCost.setText("Cost: " + gameplay.maxHpCost +" coins");
             }else if(gameplay.coins < gameplay.maxHpCost){
                 this.notice.setText("Not enough coins!");

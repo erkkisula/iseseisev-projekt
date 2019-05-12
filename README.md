@@ -1,25 +1,21 @@
-# iseseisev-projekt
-Eesrakenduste arendamise iseseisva projekti lähteülesanne. 
+# Erkki Sula iseseisev-projekt
 
-Töö võib teha teha 1-4 liikmelise meeskonnana. Punkte jaotatakse vastavalt sellele, mitu liiget on meeskonnas:
-* 1 liige - max 60 punkti/inimene.
-* 2 liiget - max 40 punkti/inimene.
-* 3 liiget - max 30 punkti/inimene.
-* 4 liiget - max 20 punkti/inimene.
+Oma iseseisvaks projektiks tegin ühe mängu.
 
-**NB! Kui meeskonnas on rohkem kui üks liige, siis peab githubis selgelt välja tulema, kes millist osa tegi, et oleks võimalik hinnata iga meeskonnaliikme individuaalset panust.**
+## Mäng
 
-README.md fail sisaldab:
-1. suurelt rakenduse nime;
-1. autorite nimesid;
-1. rakenduse funktsionaalsuse kirjeldust;
-1. ekraanitõmmist rakendusest.
+Mängus kontrollid valget kasti ja üritad elus püsida. Mida kauem elus oled seda raskemaks mäng läheb, aga seda rohkem punkte ja raha saad. Raha saab kulutada uuenduste peale poes. Mäng töötab võrguta olekus, kui kasutaja tekitab kohaliku serveri kasutades Node.js.
 
-Rakenduse puhul peavad olema täidetud vähemalt järgmised nõuded:
-  * rakendus lahendab tõsist probleemi või on meelelahutusliku eesmärgiga; 
-  * rakenduse idee peab olema kooskõlastatud õppejõuga;
-  * töötab võrguta olekus;
-  * responsive disain;
-  * saab kasutada "add to Home screen" funktsionaalsust.
+Mängijal on mängu alguses 100 elupunkti. Kui mängija läheb vaenlasele vastu kaotab ta elupunkte. Punktid mis kaotatakse oleneb vaenlasest. Elupunkte on võimalik näha paremal nurgas.
 
-Rakenduses võib kasutada teiste autorite koodi, kuid enda panus peab olema natuke enamat kui võrguta olekus töötamine. 
+Mängus on ka lihtne hiscore süsteem, mis salvestab kasutaja kõige kõrgemad punktid local storage sisse.
+
+## Kasutatud library
+
+Mängu tegemiseks kasutasin Phaser 3 libraryt mille abil on võimalik teha html5 mänge kasutades javascripti või typescripti. Phaser 3 toetab ka ES6 seega on võimalik kasutada objektorienteeritud programmeerist.
+
+## Töö osad
+
+Mängu kood - Erkki
+Graafika - Erkki
+Library - https://phaser.io/
