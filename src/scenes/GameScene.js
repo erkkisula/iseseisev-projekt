@@ -213,7 +213,6 @@ export class GameScene extends Phaser.Scene{
                     this.addWaveEnemyX(placeX, 800, 'wave1', -400);
                     placeX += 50;
                 }
-                console.log("Wave Spawning! TYPE: A1");
                 this.lastWave = 0;
             }
 
@@ -223,7 +222,6 @@ export class GameScene extends Phaser.Scene{
                     this.addWaveEnemyX(placeX, -100, 'wave3', 400);
                     placeX -= 50;
                 }
-                console.log("Wave Spawning! TYPE: A2");
                 this.lastWave = 0;
             }
 
@@ -233,7 +231,6 @@ export class GameScene extends Phaser.Scene{
                     this.addWaveEnemyY(-100, placeY, 'wave2', 400);
                     placeY += 50;
                 }
-                console.log("Wave Spawning! TYPE: A3");
                 this.lastWave = 0;
             }
             if(temp == 4){
@@ -242,7 +239,6 @@ export class GameScene extends Phaser.Scene{
                     this.addWaveEnemyY(1060, placeY, 'wave4', -400);
                     placeY -= 50;
                 }
-                console.log("Wave Spawning! TYPE: A4");
                 this.lastWave = 0;
             }
         }
@@ -261,7 +257,6 @@ export class GameScene extends Phaser.Scene{
                     this.addWaveEnemyX(placeX, 800, 'wave1', -450);
                     placeX += 50;
                 }
-                console.log("Wave Spawning! TYPE: B1");
                 this.lastWave = 0;
             }
 
@@ -276,7 +271,6 @@ export class GameScene extends Phaser.Scene{
                     this.addWaveEnemyX(placeX, -100, 'wave3', 450);
                     placeX += 50;
                 }
-                console.log("Wave Spawning! TYPE: B2");
                 this.lastWave = 0;
 
             }
@@ -292,7 +286,6 @@ export class GameScene extends Phaser.Scene{
                     this.addWaveEnemyY(1060, placeY, 'wave4', -580);
                     placeY += 50;
                 }
-                console.log("Wave Spawning! TYPE: B3");
                 this.lastWave = 0;
             }
 
@@ -307,7 +300,6 @@ export class GameScene extends Phaser.Scene{
                     this.addWaveEnemyY(1060, placeY, 'wave4', -400);
                     placeY -= 50;
                 }
-                console.log("Wave Spawning! TYPE: B4");
                 this.lastWave = 0;
             }
 
@@ -332,7 +324,6 @@ export class GameScene extends Phaser.Scene{
                     this.addWaveEnemyY(1060, placeY, 'wave4', -400);
                     placeY -= 50;
                 }
-                console.log("Wave Spawning! TYPE: B5");
                 this.lastWave = 0;
             }
         }
@@ -349,7 +340,6 @@ export class GameScene extends Phaser.Scene{
                     this.rushers.add(this.rusher);
                     this.physics.accelerateToObject(this.rusher, this.player, 1300);
                     this.lastRusher = 0;
-                    console.log("RUSHER INCOMING");
                 }
             }
         }
@@ -393,10 +383,10 @@ export class GameScene extends Phaser.Scene{
             this.regen = 0;
             this.regenAmount = 0;
             this.regenLevel = 0;
-            this.regenCost = 50;
-            this.maxHpCost = 50;
+            this.regenCost = 40;
+            this.maxHpCost = 30;
             this.speedCost = 25;
-            this.fillCost = 20;
+            this.fillCost = 0;
             
             this.lastHoming = 5000;
             this.lastBasic = 500;
@@ -414,7 +404,6 @@ export class GameScene extends Phaser.Scene{
         if((this.level % 2) == 0){
             if(this.scoreAdd != (this.level*0.1)){
                 this.scoreAdd = (this.level * 0.1);
-                console.log("DEBUG: scoreAdd increase!");
             }
         }
     }

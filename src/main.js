@@ -19,7 +19,8 @@ let config = {
     },
     scene:[
         LoadScene, MenuScene, GameScene, OverScene, HelpScene, ShopScene
-    ]
+    ],
+    parent: 'game'
 };
 
 let game = new Phaser.Game(config);

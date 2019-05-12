@@ -4,7 +4,7 @@ Oma iseseisvaks projektiks tegin ühe mängu.
 
 ## Mäng
 
-Mängus kontrollid valget kasti ja üritad elus püsida. Mida kauem elus oled seda raskemaks mäng läheb, aga seda rohkem punkte ja raha saad. Raha saab kulutada uuenduste peale poes. Mäng töötab võrguta olekus, kui kasutaja tekitab kohaliku serveri kasutades Node.js.
+Mängus kontrollid valget kasti ja üritad elus püsida. Mida kauem elus oled seda raskemaks mäng läheb, aga seda rohkem punkte ja raha saad. Raha saab kulutada uuenduste peale poes. Mäng töötab võrguta olekus, kui kasutaja tekitab kohaliku serveri.
 
 Mängijal on mängu alguses 100 elupunkti. Kui mängija läheb vaenlasele vastu kaotab ta elupunkte. Punktid mis kaotatakse oleneb vaenlasest. Elupunkte on võimalik näha paremal nurgas.
 
@@ -17,5 +17,7 @@ Mängu tegemiseks kasutasin Phaser 3 libraryt mille abil on võimalik teha html5
 ## Töö osad
 
 Mängu kood - Erkki
+
 Graafika - Erkki
+
 Library - https://phaser.io/
